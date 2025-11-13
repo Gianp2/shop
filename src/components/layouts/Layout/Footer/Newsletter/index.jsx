@@ -40,7 +40,7 @@ const Newsletter = () => {
     <>
       <section className={styles.section}>
         <div className={styles.container}>
-          <h3 className={styles.title}>Sign up for the FLAAKKO newsletter</h3>
+          <h3 className={styles.title}>Suscríbete al boletín de FLAAKKO</h3>
           <form
             className={styles.form}
             onSubmit={handleSubmit}
@@ -50,13 +50,13 @@ const Newsletter = () => {
               <>
                 <input
                   className={styles.input}
-                  placeholder="Your email address"
+                  placeholder="Tu correo electrónico"
                   type="email"
                   ref={emailInputRef}
                   required
                 />
                 <Button type="submit" className={styles.button}>
-                  Sign up
+                  Suscribirse
                 </Button>
               </>
             )}

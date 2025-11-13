@@ -1,16 +1,13 @@
 import { useLocation } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
+import 'swiper/css';
 import 'swiper/css/pagination';
-
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
-
 import MediaContainer from '../MediaContainer';
-
 import './sliderStyles.css';
 
 const Slider = ({
-  slides,
+  slides = [],
   clearPlaceholders,
   onVariantPick,
   onCardPick,
@@ -37,77 +34,78 @@ const Slider = ({
   imagePlaceholderClassName,
   imageClassName,
 }) => {
-  let slugCheck;
-  if (toPage) {
-    const { pathname } = useLocation();
-    slugCheck = slides[0].url === pathname.split('/')[2];
+  const location = useLocation();
+
+  let slugCheck = false;
+  if (toPage && slides.length > 0 && slides[0].url) {
+    slugCheck = slides[0].url === location.pathname.split('/')[2];
   }
 
+  if (!slides || slides.length === 0) return null;
+
   return (
-    <>
-      <Swiper
-        breakpoints={bp ? bp : undefined}
-        slidesPerView={slidesPerView}
-        spaceBetween={spaceBetween}
-        loop={loop}
-        centeredSlides={centeredSlides}
-        grabCursor={grabCursor}
-        autoplay={autoplay}
-        pagination={pagination}
-        navigation={navigation}
-        allowTouchMove={allowTouchMove}
-        nested={nested}
-        modules={modules}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        className={`${sliderClassName} slider-navigation`}
-      >
-        {navigation && (
-          <>
-            <div
-              className={`swiper-button image-swiper-button-prev ${
-                showPlaceholder ? 'no-show' : undefined
-              }`}
-            >
-              <FaArrowLeft />
-            </div>
-            <div
-              className={`swiper-button image-swiper-button-next ${
-                showPlaceholder ? 'no-show' : undefined
-              }`}
-            >
-              <FaArrowRight />
-            </div>
-          </>
-        )}
-        {/* TODO: update */}
-        {slides.map((slide) => (
-          <SwiperSlide
-            key={slide.id}
-            className={slideClassName}
-            onClick={
-              onVariantPick
-                ? () => onVariantPick({ variantId: slide.id })
-                : onCardPick
-                ? onCardPick
-                : undefined
-            }
+    <Swiper
+      breakpoints={bp || undefined}
+      slidesPerView={slidesPerView}
+      spaceBetween={spaceBetween}
+      loop={loop}
+      centeredSlides={centeredSlides}
+      grabCursor={grabCursor}
+      autoplay={autoplay}
+      pagination={pagination}
+      navigation={navigation}
+      allowTouchMove={allowTouchMove}
+      nested={nested}
+      modules={modules}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      className={`${sliderClassName || ''} slider-navigation`}
+    >
+      {navigation && (
+        <>
+          <div
+            className={`swiper-button image-swiper-button-prev ${
+              showPlaceholder ? 'no-show' : ''
+            }`}
           >
-            <MediaContainer
-              image={slide.src}
-              to={toPage && toPage + slide.url}
-              alt={slide.alt || ''}
-              slugCheck={slugCheck}
-              clearPlaceholders={clearPlaceholders}
-              containerClassName={mediaContainerClassName}
-              fillClassName={imageFillClassName}
-              placeholderClassName={imagePlaceholderClassName}
-              mediaClassName={imageClassName}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </>
+            <FaArrowLeft />
+          </div>
+          <div
+            className={`swiper-button image-swiper-button-next ${
+              showPlaceholder ? 'no-show' : ''
+            }`}
+          >
+            <FaArrowRight />
+          </div>
+        </>
+      )}
+
+      {slides.map((slide, index) => (
+        <SwiperSlide
+          key={slide.id || index}
+          className={slideClassName || ''}
+          onClick={
+            onVariantPick
+              ? () => onVariantPick({ variantId: slide.id })
+              : onCardPick
+              ? onCardPick
+              : undefined
+          }
+        >
+          <MediaContainer
+            image={slide.src || slide} // si llega string fallback
+            to={toPage ? toPage + (slide.url || '') : undefined}
+            alt={slide.alt || ''}
+            slugCheck={slugCheck}
+            clearPlaceholders={clearPlaceholders}
+            containerClassName={mediaContainerClassName}
+            fillClassName={imageFillClassName}
+            placeholderClassName={imagePlaceholderClassName}
+            mediaClassName={imageClassName}
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 };
 

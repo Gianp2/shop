@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { useAuthContext } from 'hooks/useAuthContext';
 
@@ -7,112 +7,96 @@ import { RiMenuLine } from 'react-icons/ri';
 import { CgSearch } from 'react-icons/cg';
 
 import CartIcon from './CartIcon';
-
 import { Button } from 'components/common';
 
 import LogoNav from 'assets/images/logo-nav.png';
-
 import styles from './index.module.scss';
 
 const Navbar = ({ toggleSideNav, openCartModal }) => {
   const { pathname } = useLocation();
-
   const { isVerified, isAdmin } = useAuthContext();
 
-  const [hasScrolled, setHasSrolled] = useState(false);
+  const [haDesplazado, setHaDesplazado] = useState(false);
 
-  const resizeHeaderOnScroll = () => {
-    setHasSrolled((hasScrolled) => {
+  // Cambiar tamaño del navbar al hacer scroll
+  const redimensionarEncabezadoAlDesplazar = () => {
+    setHaDesplazado((haDesplazado) => {
       if (
-        !hasScrolled &&
-        (document.body.scrollTop > 20 ||
-          document.documentElement.scrollTop > 20)
-      ) {
-        return true;
-      }
+        !haDesplazado &&
+        (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20)
+      ) return true;
 
       if (
-        hasScrolled &&
+        haDesplazado &&
         document.body.scrollTop < 4 &&
         document.documentElement.scrollTop < 4
-      ) {
-        return false;
-      }
+      ) return false;
 
-      return hasScrolled;
+      return haDesplazado;
     });
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', resizeHeaderOnScroll);
-
-    return () => window.removeEventListener('scroll', resizeHeaderOnScroll);
+    window.addEventListener('scroll', redimensionarEncabezadoAlDesplazar);
+    return () =>
+      window.removeEventListener('scroll', redimensionarEncabezadoAlDesplazar);
   }, []);
 
-  const handleOpenCartModal = () => {
+  const manejarAperturaModalCarrito = () => {
     if (pathname !== '/cart') {
       openCartModal();
     }
   };
 
-  const navStyles = hasScrolled
+  const estilosNav = haDesplazado
     ? `${styles.nav} ${styles.hasScrolled}`
     : styles.nav;
 
+  // Función genérica para scroll suave a sección
+  const scrollToSection = (id) => {
+    const element = document.querySelector(`#${id}`);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 100, // ajustar según altura navbar
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
-    <nav className={navStyles}>
+    <nav className={estilosNav}>
+      {/* Parte superior */}
       <div className={styles.container_top}>
         <Button className={`${styles.link} ${styles.info_link}`} type="button">
           Info
         </Button>
+
         <ul className={styles.info_list}>
           <li>
             <Link className={styles.link} to="/">
-              Help Center
+              Centro de Ayuda
             </Link>
           </li>
           <li>
             <Link className={styles.link} to="/">
-              Contact Us
+              Contáctanos
             </Link>
           </li>
           <li>
             <Link className={styles.link} to="/">
-              Shipping Info
-            </Link>
-          </li>
-          <li>
-            <Link className={styles.link} to="/">
-              Track My Order
-            </Link>
-          </li>
-          <li>
-            <Link className={styles.link} to="/">
-              Return & Exchanges
-            </Link>
-          </li>
-          <li>
-            <Link className={styles.link} to="/">
-              About Us
-            </Link>
-          </li>
-          <li>
-            <Link className={styles.link} to="/">
-              Carreers
+              Devoluciones y Cambios
             </Link>
           </li>
         </ul>
+
         {!isVerified && (
-          <Link
-            to="/account/login"
-            className={`${styles.link} ${styles.login_link}`}
-          >
-            Login
+          <Link to="/account/login" className={`${styles.link} ${styles.login_link}`}>
+            Iniciar
           </Link>
         )}
         {isVerified && (
           <Link to="/account" className={`${styles.link} ${styles.login_link}`}>
-            My Account
+            Mi Cuenta
           </Link>
         )}
         {isAdmin && (
@@ -121,35 +105,58 @@ const Navbar = ({ toggleSideNav, openCartModal }) => {
           </Link>
         )}
       </div>
+
+      {/* Parte inferior */}
       <div className={styles.container_bottom}>
         <Link to="/">
-          <img className={styles.logo} src={LogoNav} alt="Logo Nav" />
+          <img className={styles.logo} src={LogoNav} alt="Logo de Navegación" />
         </Link>
+
         <ul className={styles.links}>
           <li>
-            <NavLink className={styles.link} to="/collections/t-shirts">
-              T-shirts
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
+            <a
               className={styles.link}
-              to="/collections/hoodies-sweatshirts"
+              href="#remeras"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('remeras');
+              }}
             >
-              Hoodies
-            </NavLink>
+              Remeras
+            </a>
           </li>
           <li>
-            <NavLink className={styles.link} to="/collections/accessories">
-              Accessories
-            </NavLink>
+            <a
+              className={styles.link}
+              href="#hoodies"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('hoodies');
+              }}
+            >
+              Buzos
+            </a>
+          </li>
+          <li>
+            <a
+              className={styles.link}
+              href="#accesorios"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('accesorios');
+              }}
+            >
+              Accesorios
+            </a>
           </li>
         </ul>
+
+        {/* Íconos */}
         <ul className={styles.icons_menu}>
           <li className={`${styles.search_icon} disabled-link`}>
             <CgSearch />
           </li>
-          <li className={styles.cart_icon} onClick={handleOpenCartModal}>
+          <li className={styles.cart_icon} onClick={manejarAperturaModalCarrito}>
             <CartIcon />
           </li>
           <li className={styles.mobile_icon}>

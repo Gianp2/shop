@@ -49,7 +49,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="collections/:id" element={<CollectionPage />} />
+            <Route path="collections/:slug" element={<CollectionPage />} />
             <Route
               path="products/:id"
               element={

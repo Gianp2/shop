@@ -33,37 +33,27 @@ const Footer = () => {
       <div className={styles.container}>
         <div className={styles.sitemap}>
           <div className={styles.nav_wrapper}>
-            <h4 className={styles.nav_title}>Help</h4>
+            <h4 className={styles.nav_title}>Ayuda</h4>
             <ul className={styles.nav}>
               <li>
-                <Link to="/">Help Center</Link>
+                <Link to="/">Centro de ayuda</Link>
               </li>
               <li>
-                <Link to="/">Contact Us</Link>
+                <Link to="/">Contáctanos</Link>
               </li>
               <li>
-                <Link to="/">Shipping Info</Link>
+                <Link to="/">Información de envío</Link>
               </li>
               <li>
-                <Link to="/">Track My Order</Link>
+                <Link to="/">Rastrear mi pedido</Link>
               </li>
               <li>
-                <Link to="/">Returns & Exchanges</Link>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.nav_wrapper}>
-            <h4 className={styles.nav_title}>More</h4>
-            <ul className={styles.nav}>
-              <li>
-                <Link to="">About Us</Link>
-              </li>
-              <li>
-                <Link to="">Carreers</Link>
+                <Link to="/">Devoluciones y cambios</Link>
               </li>
             </ul>
           </div>
         </div>
+
         <div className={styles.socials_wrapper}>
           {isBigScreen && <Newsletter />}
           <div className={styles.socials}>

@@ -38,7 +38,7 @@ const CartContent = ({ closeCartModal, slides }) => {
                 to="/collections/products"
                 onClick={closeCartModal}
               >
-                Shop now
+                Compra ahora
               </Button>
             </div>
           </div>

@@ -19,28 +19,28 @@ import {
 } from 'react-icons/fa';
 
 import { useAuthContext } from 'hooks/useAuthContext';
-
 import { Slider } from 'components/common';
 
 import { SLIDES as slides } from './data';
 
 import styles from './index.module.scss';
 
-const NavDrawerContent = ({ toggleSideNav }) => {
+const ContenidoMenuLateral = ({ toggleSideNav }) => {
   const { isAdmin, isVerified, name } = useAuthContext();
 
   return (
     <div className={styles.container}>
+      {/* Sección de enlaces a productos */}
       <div className={styles.links_container}>
         <ul className={styles.links_list}>
-          <h2>Products</h2>
+          <h2>Productos</h2>
           <li>
             <Link
               to="/collections/t-shirts"
               onClick={toggleSideNav}
               className={styles.link}
             >
-              T-Shirts
+              Remeras
             </Link>
           </li>
           <li>
@@ -49,7 +49,7 @@ const NavDrawerContent = ({ toggleSideNav }) => {
               onClick={toggleSideNav}
               className={styles.link}
             >
-              Hoodies
+              Buzos
             </Link>
           </li>
           <li>
@@ -58,12 +58,13 @@ const NavDrawerContent = ({ toggleSideNav }) => {
               onClick={toggleSideNav}
               className={styles.link}
             >
-              Accessories
+              Accesorios
             </Link>
           </li>
         </ul>
+
         <ul className={styles.links_list}>
-          <h2>Drops</h2>
+          <h2>Lanzamientos</h2>
           <li>
             <Link
               to="/collections/products"
@@ -75,6 +76,8 @@ const NavDrawerContent = ({ toggleSideNav }) => {
           </li>
         </ul>
       </div>
+
+      {/* Carrusel de productos o promociones */}
       <div className={styles.products_container}>
         <Slider
           slides={slides}
@@ -96,12 +99,20 @@ const NavDrawerContent = ({ toggleSideNav }) => {
           imageClassName={styles.image}
         />
       </div>
+
+      {/* Información del usuario y enlaces de ayuda */}
       <div className={styles.info_container}>
-        {isVerified && <h2 className={styles.title}>Welcome back, {name}!</h2>}
+        {isVerified && (
+          <h2 className={styles.title}>¡Bienvenido de nuevo, {name}!</h2>
+        )}
         <ul className={styles.links_list}>
           {isAdmin && (
             <li>
-              <Link to="/admin" onClick={toggleSideNav} className={styles.link}>
+              <Link
+                to="/admin"
+                onClick={toggleSideNav}
+                className={styles.link}
+              >
                 <i>
                   <FaExclamationTriangle />
                 </i>
@@ -118,7 +129,7 @@ const NavDrawerContent = ({ toggleSideNav }) => {
               <i>
                 <FaUserCircle />
               </i>
-              {isVerified ? 'My account' : 'Login'}
+              {isVerified ? 'Mi cuenta' : 'Iniciar sesión'}
             </Link>
           </li>
           <li>
@@ -126,23 +137,7 @@ const NavDrawerContent = ({ toggleSideNav }) => {
               <i>
                 <FaQuestionCircle />
               </i>
-              Help Center
-            </Link>
-          </li>
-          <li>
-            <Link to="/" onClick={toggleSideNav} className={styles.link}>
-              <i>
-                <FaShippingFast />
-              </i>
-              Shipping Info
-            </Link>
-          </li>
-          <li>
-            <Link to="/" onClick={toggleSideNav} className={styles.link}>
-              <i>
-                <FaMapMarkerAlt />
-              </i>
-              Track Your Order
+              Centro de ayuda
             </Link>
           </li>
           <li>
@@ -150,23 +145,16 @@ const NavDrawerContent = ({ toggleSideNav }) => {
               <i>
                 <FaTag />
               </i>
-              Discounts
+              Descuentos
             </Link>
           </li>
-          <li>
-            <Link to="/" onClick={toggleSideNav} className={styles.link}>
-              <i>
-                <FaBriefcase />
-              </i>
-              Careers
-            </Link>
-          </li>
+
           <li>
             <Link to="/" onClick={toggleSideNav} className={styles.link}>
               <i>
                 <FaSyncAlt />
               </i>
-              Returns and Exchange
+              Devoluciones y cambios
             </Link>
           </li>
           <li>
@@ -174,11 +162,13 @@ const NavDrawerContent = ({ toggleSideNav }) => {
               <i>
                 <FaInfoCircle />
               </i>
-              About Us
+              Sobre nosotros
             </Link>
           </li>
         </ul>
       </div>
+
+      {/* Redes sociales */}
       <div className={styles.socials_container}>
         <a href="https://www.instagram.com" target="_blank" rel="noreferrer">
           <FaInstagram />
@@ -200,4 +190,4 @@ const NavDrawerContent = ({ toggleSideNav }) => {
   );
 };
 
-export default NavDrawerContent;
+export default ContenidoMenuLateral;

@@ -57,7 +57,7 @@ const CartPage = () => {
             Total: <span>${addAllItemsPrice(items)}</span>
           </p>
           <Button to="/checkout" className={styles.checkout_button}>
-            Checkout
+            Finalizar compra
           </Button>
         </div>
         <div className={styles.content_wrapper}>
@@ -86,14 +86,14 @@ const CartPage = () => {
           </div>
           <aside className={styles.sidebar}>
             <form className={styles.support}>
-              <p className={styles.support_title}>Support Code</p>
+              <p className={styles.support_title}>Código de descuento</p>
               <input
                 className={styles.support_input}
                 type="text"
-                placeholder="Enter code"
+                placeholder="Ingresar código"
               />
               <Button className={`${styles.support_button} disabled-link`}>
-                Add
+                Agregar
               </Button>
             </form>
           </aside>
@@ -101,9 +101,9 @@ const CartPage = () => {
       </>
     ) : (
       <div className={styles.no_products_wrapper}>
-        <p className={styles.no_products}>Show your bag some love!</p>
+        <p className={styles.no_products}>¡Tu carrito está vacío!</p>
         <Button className={styles.products_button} to="/collections/products">
-          Shop now
+          Ver productos
         </Button>
       </div>
     );
@@ -115,7 +115,7 @@ const CartPage = () => {
         <>
           <section>
             <div className={`${styles.container} main-container`}>
-              <h1 className={styles.title}>Your bag</h1>
+              <h1 className={styles.title}>Tu carrito</h1>
               {content}
             </div>
           </section>

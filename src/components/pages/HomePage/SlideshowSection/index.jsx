@@ -38,10 +38,10 @@ const SlideshowSection = () => {
               <p className={styles.content_title}>Drop #01</p>
               <p className={styles.content_title}>De gira</p>
               <p className={styles.content_subtitle}>
-                T-shirts, hoodies & more
+                T-shirts, hoodies & más
               </p>
               <Button className={styles.button} to="/collections/products">
-                Shop now
+                Compra ahora
               </Button>
             </div>
           )}

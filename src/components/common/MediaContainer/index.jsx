@@ -1,27 +1,24 @@
 import { useState, useRef } from 'react';
-
 import { Link } from 'react-router-dom';
-
 import styles from './index.module.scss';
 
 const MediaContainer = ({
   image,
   video,
-  autoPlay,
-  loop,
-  muted,
+  autoPlay = false,
+  loop = false,
+  muted = false,
   to,
-  alt,
+  alt = '',
   slugCheck,
   onClick,
   clearPlaceholders,
-  containerClassName,
-  fillClassName,
-  placeholderClassName,
-  mediaClassName,
+  containerClassName = '',
+  fillClassName = '',
+  placeholderClassName = '',
+  mediaClassName = '',
 }) => {
   const placeholdersCleared = useRef(false);
-
   const [mediaIsLoading, setMediaIsLoading] = useState(true);
   const [showMediaPlaceHolder, setShowMediaPlaceholder] = useState(true);
 
@@ -31,10 +28,54 @@ const MediaContainer = ({
       clearPlaceholders();
     }
     setShowMediaPlaceholder(false);
-    setTimeout(() => {
-      return setMediaIsLoading(false);
-    }, 100);
+    setTimeout(() => setMediaIsLoading(false), 100);
   };
+
+  const renderMedia = () => {
+    if (image) {
+      return (
+        <img
+          src={image}
+          alt={alt}
+          onLoad={clearMediaPlaceholder}
+          className={`${styles.image} ${mediaClassName} ${
+            !mediaIsLoading ? styles.show : ''
+          }`}
+          loading="lazy"
+        />
+      );
+    }
+
+    if (video) {
+      return (
+        <video
+          src={video}
+          autoPlay={autoPlay}
+          loop={loop}
+          muted={muted}
+          onLoadedData={clearMediaPlaceholder}
+          className={`${styles.video} ${mediaClassName} ${
+            !mediaIsLoading ? styles.show : ''
+          }`}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  const content = (
+    <div className={`${styles.media_fill} ${fillClassName}`}>
+      {mediaIsLoading && (
+        <div
+          className={`${styles.media_placeholder} ${placeholderClassName} ${
+            showMediaPlaceHolder ? '' : styles.hide
+          }`}
+        />
+      )}
+      {renderMedia()}
+    </div>
+  );
 
   if (to) {
     return (
@@ -43,81 +84,14 @@ const MediaContainer = ({
         state={slugCheck ? true : null}
         className={`${styles.media_container} ${containerClassName}`}
       >
-        <div className={`${styles.media_fill} ${fillClassName}`}>
-          {mediaIsLoading && (
-            <div
-              className={`${styles.media_placeholder} ${placeholderClassName} ${
-                showMediaPlaceHolder ? undefined : styles.hide
-              }`}
-            />
-          )}
-          {image && (
-            <img
-              src={image}
-              autoPlay={autoPlay}
-              loop={loop}
-              muted={muted}
-              onLoad={clearMediaPlaceholder}
-              alt={alt}
-              className={`${styles.image} ${mediaClassName} ${
-                !mediaIsLoading ? styles.show : undefined
-              }`}
-            />
-          )}
-          {video && (
-            <video
-              src={video}
-              autoPlay={autoPlay}
-              loop={loop}
-              muted={muted}
-              onLoadedData={clearMediaPlaceholder}
-              className={`${styles.video} ${mediaClassName} ${
-                !mediaIsLoading ? styles.show : undefined
-              }`}
-            />
-          )}
-        </div>
+        {content}
       </Link>
     );
   }
 
   return (
-    <div
-      onClick={onClick}
-      className={`${styles.media_container} ${containerClassName}`}
-    >
-      <div className={`${styles.media_fill} ${fillClassName}`}>
-        {mediaIsLoading && (
-          <div
-            className={`${styles.media_placeholder} ${placeholderClassName} ${
-              showMediaPlaceHolder ? undefined : styles.hide
-            }`}
-          />
-        )}
-        {image && (
-          <img
-            src={image}
-            onLoad={clearMediaPlaceholder}
-            alt={alt}
-            className={`${styles.image} ${mediaClassName} ${
-              !mediaIsLoading ? styles.show : undefined
-            }`}
-            loading="lazy"
-          />
-        )}
-        {video && (
-          <video
-            src={video}
-            autoPlay
-            loop
-            muted
-            onLoadedData={clearMediaPlaceholder}
-            className={`${styles.video} ${mediaClassName} ${
-              !mediaIsLoading ? styles.show : undefined
-            }`}
-          />
-        )}
-      </div>
+    <div onClick={onClick} className={`${styles.media_container} ${containerClassName}`}>
+      {content}
     </div>
   );
 };
